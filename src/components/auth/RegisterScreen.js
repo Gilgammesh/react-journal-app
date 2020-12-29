@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import validator from "validator";
+import Swal from "sweetalert2";
 import { useForm } from "../../hooks/useForm";
 import { startRegister } from "../../redux/actions/auth";
 
@@ -9,8 +10,8 @@ const RegisterScreen = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const [isFormValid, setIsFormValid] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
+
   const [formValues, handleInputChange] = useForm({
     name: "Carlos Santander",
     email: "carlos.santander@cablemundo.pe",
@@ -30,41 +31,68 @@ const RegisterScreen = () => {
   const validateForm = () => {
     if (validator.isEmpty(name)) {
       setErrorMsg("El nombre es requerido");
-      setIsFormValid(false);
+      Swal.fire({
+        title: "Error!",
+        text: errorMsg,
+        icon: "error",
+      });
       return false;
     }
     if (validator.isEmpty(email)) {
       setErrorMsg("El correo es requerido");
-      setIsFormValid(false);
+      Swal.fire({
+        title: "Error!",
+        text: errorMsg,
+        icon: "error",
+      });
       return false;
     }
     if (!validator.isEmail(email)) {
       setErrorMsg("El correo debe tener un formato válido");
-      setIsFormValid(false);
+      Swal.fire({
+        title: "Error!",
+        text: errorMsg,
+        icon: "error",
+      });
       return false;
     }
     if (validator.isEmpty(password)) {
       setErrorMsg("La contraseña es requerida");
-      setIsFormValid(false);
+      Swal.fire({
+        title: "Error!",
+        text: errorMsg,
+        icon: "error",
+      });
       return false;
     }
     if (!validator.isLength(password, { min: 6, max: undefined })) {
       setErrorMsg("La contraseña debe tener como mínimo 6 dígitos");
-      setIsFormValid(false);
+      Swal.fire({
+        title: "Error!",
+        text: errorMsg,
+        icon: "error",
+      });
       return false;
     }
     if (validator.isEmpty(password_)) {
       setErrorMsg("La confirmación de contraseña es requerida");
-      setIsFormValid(false);
+      Swal.fire({
+        title: "Error!",
+        text: errorMsg,
+        icon: "error",
+      });
       return false;
     }
     if (!validator.equals(password, password_)) {
       setErrorMsg("Las contraseñas deben ser iguales");
-      setIsFormValid(false);
+      Swal.fire({
+        title: "Error!",
+        text: errorMsg,
+        icon: "error",
+      });
       return false;
     }
     setErrorMsg("");
-    setIsFormValid(true);
     return true;
   };
 
@@ -72,7 +100,6 @@ const RegisterScreen = () => {
     <>
       <h3 className="auth__title">Register</h3>
       <form className="auth__form" onSubmit={handleRegister}>
-        {!isFormValid && <div className="auth__alert-error">{errorMsg}</div>}
         <div>
           <input
             type="text"

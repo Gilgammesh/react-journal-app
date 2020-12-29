@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import { firebase, googleAuthProvider } from "../../firebase/firebase.config";
 import { types } from "../../types/types";
 import { loading } from "./login";
@@ -14,7 +15,11 @@ export const startLogin = (email, password) => {
       })
       .catch((err) => {
         dispatch(loading(false));
-        console.log(err);
+        Swal.fire({
+          title: "Error!",
+          text: err.message,
+          icon: "error",
+        });
       });
   };
 };
@@ -29,7 +34,11 @@ export const startLoginGoogle = () => {
         dispatch(login(uid, displayName, true));
       })
       .catch((err) => {
-        console.log(err);
+        Swal.fire({
+          title: "Error!",
+          text: err.message,
+          icon: "error",
+        });
       });
   };
 };
@@ -45,7 +54,11 @@ export const startRegister = (name, email, password) => {
         dispatch(login(uid, displayName, true));
       })
       .catch((err) => {
-        console.log(err);
+        Swal.fire({
+          title: "Error!",
+          text: err.message,
+          icon: "error",
+        });
       });
   };
 };
@@ -59,7 +72,11 @@ export const startLogout = () => {
         dispatch(logout());
       })
       .catch((err) => {
-        console.log(err);
+        Swal.fire({
+          title: "Error!",
+          text: err.message,
+          icon: "error",
+        });
       });
   };
 };

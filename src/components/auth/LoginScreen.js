@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import validator from "validator";
+import Swal from "sweetalert2";
 import { useForm } from "../../hooks/useForm";
 import { startLogin, startLoginGoogle } from "../../redux/actions/auth";
 import { loading } from "../../redux/actions/login";
@@ -12,9 +13,6 @@ const LoginScreen = () => {
   const state = useSelector((state) => state);
 
   const isLoading = state.login.isLoading;
-
-  const [isFormValid, setIsFormValid] = useState(true);
-  const [errorMsg, setErrorMsg] = useState("");
 
   const [formValues, handleInputChange] = useForm({
     email: "carlos.santander@cablemundo.pe",
@@ -41,27 +39,37 @@ const LoginScreen = () => {
 
   const validateForm = () => {
     if (validator.isEmpty(email)) {
-      setErrorMsg("El correo es requerido");
-      setIsFormValid(false);
+      Swal.fire({
+        title: "Error!",
+        text: "El correo es requerido",
+        icon: "error",
+      });
       return false;
     }
     if (!validator.isEmail(email)) {
-      setErrorMsg("El correo debe tener un formato válido");
-      setIsFormValid(false);
+      Swal.fire({
+        title: "Error!",
+        text: "El correo debe tener un formato válido",
+        icon: "error",
+      });
       return false;
     }
     if (validator.isEmpty(password)) {
-      setErrorMsg("La contraseña es requerida");
-      setIsFormValid(false);
+      Swal.fire({
+        title: "Error!",
+        text: "La contraseña es requerida",
+        icon: "error",
+      });
       return false;
     }
     if (!validator.isLength(password, { min: 6, max: undefined })) {
-      setErrorMsg("La contraseña debe tener como mínimo 6 dígitos");
-      setIsFormValid(false);
+      Swal.fire({
+        title: "Error!",
+        text: "La contraseña debe tener como mínimo 6 dígitos",
+        icon: "error",
+      });
       return false;
     }
-    setErrorMsg("");
-    setIsFormValid(true);
     return true;
   };
 
@@ -69,7 +77,6 @@ const LoginScreen = () => {
     <>
       <h3 className="auth__title">Login</h3>
       <form className="auth__form" onSubmit={handleLogin}>
-        {!isFormValid && <div className="auth__alert-error">{errorMsg}</div>}
         <div>
           <input
             type="email"
