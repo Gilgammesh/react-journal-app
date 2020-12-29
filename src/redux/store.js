@@ -1,10 +1,12 @@
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
 import authReducer from "./reducers/authReducer";
+import loginReducer from "./reducers/loginReducer";
 
 // combinamos reducers
 const reducers = combineReducers({
   auth: authReducer,
+  login: loginReducer,
 });
 
 // Carga la extensión de redux en el navegador
