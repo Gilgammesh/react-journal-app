@@ -1,21 +1,38 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import moment from "moment";
+import { activeNote } from "../../redux/actions/notes";
+import { capitalize } from "../../helpers/formatText";
 
-const JournalEntry = () => {
+const JournalEntry = (props) => {
+  const { id, title, body, date, url } = props;
+  const dispatch = useDispatch();
+
+  const dayName = moment(date).format("dddd");
+  const dayNro = moment(date).format("DD");
+
+  const handleActiveEntry = () => {
+    dispatch(activeNote(id, { title, body, date, url }));
+  };
+
   return (
-    <div className="journal__entry pointer">
-      <div className="journal__entry-picture"></div>
+    <div className="journal__entry pointer" onClick={handleActiveEntry}>
+      {url && (
+        <div
+          className="journal__entry-picture"
+          style={{
+            backgroundImage: `url(${url})`,
+          }}
+        ></div>
+      )}
       <div className="journal__entry-body">
-        <p className="journal__entry-title">Un nuevo día</p>
-        <p className="journal__entry-content">
-          Mollit do duis esse amet est amet velit reprehenderit fugiat velit
-          amet aliqua ea incididunt. Qui veniam est incididunt ad ad non aliquip
-          duis ex.
-        </p>
+        <p className="journal__entry-title">{title}</p>
+        <p className="journal__entry-content">{body}</p>
       </div>
 
       <div className="journal__entry-date-box">
-        <span>Monday</span>
-        <h4>28</h4>
+        <span>{capitalize(dayName)}</span>
+        <h4>{dayNro}</h4>
       </div>
     </div>
   );
